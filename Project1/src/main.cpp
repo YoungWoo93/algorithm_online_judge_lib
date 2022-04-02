@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
-#include "LinkedList.h"
-#include "Stack.h"
-#include "Deque.h"
+#include "../include/LinkedList.h"
+#include "../include/Stack.h"
+#include "../include/Deque.h"
 
 
 using namespace _DataStructures_;
