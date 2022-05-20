@@ -292,7 +292,7 @@ namespace _DataStructures_
 			V* defaultValue = new V;
 
 			if (empty())
-			{	
+			{
 				assign(size, *defaultValue);
 
 				delete defaultValue;

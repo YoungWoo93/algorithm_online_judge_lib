@@ -139,13 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\data_structure\BinaryTree.h" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Deque.h" />
-    <ClInclude Include="include\LinkedList.h" />
-    <ClInclude Include="include\Queue.h" />
-    <ClInclude Include="include\Stack.h" />
+    <ClInclude Include="include\data_structure\Deque.h" />
+    <ClInclude Include="include\data_structure\LinkedList.h" />
+    <ClInclude Include="include\data_structure\Queue.h" />
+    <ClInclude Include="include\data_structure\Stack.h" />
     <ClInclude Include="include\test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

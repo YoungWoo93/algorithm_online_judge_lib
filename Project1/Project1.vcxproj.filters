@@ -15,16 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Deque.h">
+    <ClInclude Include="include\data_structure\Deque.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="include\LinkedList.h">
+    <ClInclude Include="include\data_structure\LinkedList.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="include\Queue.h">
+    <ClInclude Include="include\data_structure\Queue.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="include\Stack.h">
+    <ClInclude Include="include\data_structure\Stack.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="include\test.h">
@@ -33,6 +33,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="include\data_structure\BinaryTree.h">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
