@@ -101,7 +101,7 @@ namespace _DataStructures_
 			if (left != nullptr)
 			{
 				left->parent = newNode;
-				height = max<int>(height, left->height);
+				height = std::max<int>(height, left->height);
 			}
 
 			right = assign((n - 1) - (n - 1) / 2, value);
@@ -109,7 +109,7 @@ namespace _DataStructures_
 			if (right != nullptr)
 			{
 				right->parent = newNode;
-				height = max<int>(height, right->height);
+				height = std::max<int>(height, right->height);
 			}
 
 			newNode->height = height + 1;
@@ -133,7 +133,7 @@ namespace _DataStructures_
 		{
 			if (!_newNode->isLeaf() || !_newNode->isRoot())
 			{
-				std::cout << "insert function works on value or single node, recommend the merge function instead." << endl;
+				std::cout << "insert function works on value or single node, recommend the merge function instead." << std::endl;
 				return;
 			}
 				
@@ -185,7 +185,7 @@ namespace _DataStructures_
 				int leftDepth = (ptr->left == nullptr ? -1 : ptr->left->height);
 				int rightDepth = (ptr->right == nullptr ? -1 : ptr->right->height);
 
-				int currentDepth = max(leftDepth, rightDepth) + 1;
+				int currentDepth = std::max(leftDepth, rightDepth) + 1;
 				
 				if (ptr->height == currentDepth)
 					break;
@@ -227,7 +227,7 @@ namespace _DataStructures_
 				int leftDepth = (ptr->left == nullptr ? -1 : ptr->left->height);
 				int rightDepth = (ptr->right == nullptr ? -1 : ptr->right->height);
 
-				int currentDepth = max(leftDepth, rightDepth) + 1;
+				int currentDepth = std::max(leftDepth, rightDepth) + 1;
 
 				if (ptr->height == currentDepth)
 					break;
@@ -273,7 +273,7 @@ namespace _DataStructures_
 				int leftDepth = (ptr->left == nullptr ? -1 : ptr->left->height);
 				int rightDepth = (ptr->right == nullptr ? -1 : ptr->right->height);
 
-				int currentDepth = max(leftDepth, rightDepth) + 1;
+				int currentDepth = std::max(leftDepth, rightDepth) + 1;
 
 				if (ptr->height == currentDepth)
 					break;
@@ -424,8 +424,8 @@ namespace _DataStructures_
 
 			int temp = 0;
 
-			if (_node->left != nullptr && _node - right != nullptr)
-				temp = max<int>(_node->left->height, _node->right->height) + 1;
+			if (_node->left != nullptr && _node->right != nullptr)
+				temp = std::max<int>(_node->left->height, _node->right->height) + 1;
 			else if (_node->left != nullptr)
 				temp = _node->left->height + 1;
 			else if (_node->right != nullptr)
@@ -470,7 +470,7 @@ namespace _DataStructures_
 
 			if (node->left != nullptr)
 				DFS(node->left, depth + 1);
-			std::cout << endl;
+			std::cout << std::endl;
 			if (node->right != nullptr)
 			{
 				for (int i = 0; i < depth; i++)

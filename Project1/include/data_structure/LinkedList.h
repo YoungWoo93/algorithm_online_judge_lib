@@ -1,9 +1,5 @@
 #pragma once
 
-
-
-using namespace std;
-
 namespace _DataStructures_
 {
 	template <typename V>

@@ -147,6 +147,7 @@
     <ClInclude Include="include\data_structure\LinkedList.h" />
     <ClInclude Include="include\data_structure\Queue.h" />
     <ClInclude Include="include\data_structure\Stack.h" />
+    <ClInclude Include="include\data_structure\Vector.h" />
     <ClInclude Include="include\test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
