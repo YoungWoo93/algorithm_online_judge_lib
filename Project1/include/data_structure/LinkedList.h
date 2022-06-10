@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 namespace _DataStructures_
 {
 	template <typename V>
@@ -35,12 +37,115 @@ namespace _DataStructures_
 		LinkedListNode<V>* next;
 	};
 
+	template <typename T>
+	std::ostream& operator <<(std::ostream& o, LinkedListNode<T> p)
+	{
+		return o << p.value;
+	}
 
 	template <typename V>
 	class LinkedList
 	{
 		// https://www.cplusplus.com/reference/list/list/
 	public:
+		class iterator {
+
+
+		public:
+			iterator() :ptr(nullptr) {}
+			iterator(const iterator& it) :ptr(it.ptr) {}
+			~iterator() {}
+
+
+			bool operator ==(const iterator& it) {
+
+				return ptr == it.ptr;
+			}
+
+			bool operator !=(const iterator& it) {
+
+				return ptr != it.ptr;
+			}
+
+			iterator& operator =(const iterator& it) {
+
+				ptr = it.ptr;
+
+				return *this;
+			}
+
+			iterator operator +(const int n) {
+				iterator ret(*this);
+
+				for (int i = 0; i < n; i++)
+					ret.ptr = ret.ptr->next;
+
+				return ret;
+			}
+			iterator& operator ++() {
+
+				ptr = ptr->next;
+
+				return *this;
+			}
+			iterator& operator ++(int) {
+
+				iterator ret(*this);
+				ptr = ptr->next;
+
+				return ret;
+			}
+			iterator& operator +=(const int n) {
+
+				for (int i = 0; i < n; i++)
+					ptr = ptr->next;
+
+				return *this;
+			}
+
+
+			iterator operator -(const int n) {
+				iterator ret(*this);
+
+				for (int i = 0; i < n; i++)
+					ret.ptr = ret.ptr->prev;
+
+				return ret;
+			}
+			iterator& operator --() {
+
+				ptr = ptr->prev;
+
+				return *this;
+			}
+			iterator& operator --(int) {
+
+				iterator ret(*this);
+				ptr = ptr->prev;
+
+				return ret;
+			}
+			iterator& operator -=(const int n) {
+
+				for (int i = 0; i < n; i++)
+					ptr = ptr->prev;
+
+				return *this;
+			}
+
+			V operator *() {
+
+				return ptr->value;
+			}
+
+		public:
+			LinkedListNode<V>* ptr;
+		};
+
+
+
+	public:
+
 		LinkedList() {
 			head = nullptr;
 			tail = nullptr;
@@ -72,10 +177,31 @@ namespace _DataStructures_
 		/// 
 		/// iterators:
 		/// 
-		/// begin
-		///	end
-		///	rbegin
-		///	rend
+		iterator begin()
+		{
+			_iterator.ptr = head;
+
+			return _iterator;
+		}
+		iterator end()
+		{
+			_iterator.ptr = tail->next;
+
+			return _iterator;
+		}
+
+		iterator rbegin()
+		{
+			_iterator.ptr = tail;
+
+			return _iterator;
+		}
+		iterator rend()
+		{
+			_iterator.ptr = head->prev;
+
+			return _iterator;
+		}
 		///	cbegin
 		///	cend
 		///	crbegin
@@ -85,7 +211,7 @@ namespace _DataStructures_
 		/// </summary>
 		/// <typeparam name="V"></typeparam>
 
-			// cpacity:
+		// cpacity:
 		bool empty()
 		{
 			return size() == 0;
@@ -202,66 +328,92 @@ namespace _DataStructures_
 		//emplace
 		//https://www.cplusplus.com/reference/list/list/emplace/
 
-		void insert(int index, V value)
+		void insert(iterator index, V value)
 		{
-			if (index < 0 || size() < index)
-			{
-				// index error check;
-				return;
-			}
-
-			LinkedListNode<V>* cur = head;
-			for (int i = 0; i < index; i++)
-				cur = cur->next;
-
+			LinkedListNode<V>* cur = index.ptr;
 			LinkedListNode<V>* newNode = new LinkedListNode<V>(value);
 
-			newNode->next = cur;
-			newNode->prev = cur->prev;
-			if (newNode->prev != nullptr)
-				newNode->prev->next = newNode;
-
-			cur->prev = newNode;
-
-			nodeCount++;
-		}
-		void insert(int index, LinkedList<V>& list)
-		{
-			LinkedListNode<V>* cur = list.head;
-			for (int i = 0; i < list.size(); i++)
+			if (cur == nullptr)		// 근데 여기가 end로서의 null 인지, 개발자 실수로 인한 null인지 알 방법이 있나?
+			{						
+				push_back(value);
+			}
+			else
 			{
-				insert(index + i, cur->value);
-				cur = cur->next;
+				newNode->next = cur;
+				newNode->prev = cur->prev;
+				if (newNode->prev != nullptr)
+					newNode->prev->next = newNode;
+
+				if (cur->prev == nullptr)
+					head = newNode;
+				cur->prev = newNode;
+
+				nodeCount++;
+			}
+
+		}
+		void insert(iterator index, LinkedList<V>& list)
+		{
+			LinkedListNode<V>* cur = index.ptr;
+
+			if (cur == nullptr)
+			{
+				for (iterator it = list.begin(); it != list.end(); it++)
+					push_back(*it);
+			}
+			else
+			{
+				for (iterator it = list.begin(); it != list.end(); it++)
+					insert(index, *it);
+			}
+		}
+		void insert(iterator index, iterator start, iterator end)
+		{
+			LinkedListNode<V>* cur = index.ptr;
+
+			if (cur == nullptr)
+			{
+				for (iterator it = start; it != end; it++)
+					push_back(*it);
+			}
+			else
+			{
+				for (iterator it = start; it != end; it++)
+					insert(index, *it);
 			}
 		}
 
-
-		void erase(int index)
+		iterator erase(iterator index)
 		{
-			if (index < 0 || size() < index)
+			LinkedListNode<V>* cur = index.ptr;
+			iterator ret = index++;
+
+			if (cur->prev == nullptr)
 			{
-				// index error check;
-				return;
+				pop_front();
+			}
+			else
+			{
+				nodeCount--;
+
+				if (cur->prev != nullptr)
+					cur->prev->next = cur->next;
+				if (cur->next != nullptr)
+					cur->next->prev = cur->prev;
+
+				delete cur;
 			}
 
-			LinkedListNode<V>* cur = head;
-			for (int i = 0; i < index; i++)
-				cur = cur->next;
-
-			if (cur->prev != nullptr)
-				cur->prev->next = cur->next;
-			if (cur->next != nullptr)
-				cur->next->prev = cur->prev;
-
-			delete cur;
-
-			nodeCount--;
+			return ret;
 		}
-		void erase(int start, int end)
-		{
-			for (int i = 0; i < end - start; i++)
-				erase(start);
 
+		iterator erase(iterator start, iterator end)
+		{
+			iterator ret;
+			for (ret = start; it != end;)
+				it = erase(it);
+			
+			return ret;
 		}
 
 		void swap(LinkedList<V>& list)
@@ -362,5 +514,9 @@ namespace _DataStructures_
 		unsigned int nodeCount;
 
 	private:
+
+		iterator _iterator;
 	};
+
+	
 }
