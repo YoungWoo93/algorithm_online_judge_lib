@@ -386,7 +386,7 @@ namespace _DataStructures_
 		iterator erase(iterator index)
 		{
 			LinkedListNode<V>* cur = index.ptr;
-			iterator ret = index++;
+			iterator ret = index+1;
 
 			if (cur->prev == nullptr)
 			{
@@ -409,11 +409,10 @@ namespace _DataStructures_
 
 		iterator erase(iterator start, iterator end)
 		{
-			iterator ret;
-			for (ret = start; it != end;)
-				it = erase(it);
+			while(start != end)
+				start = erase(start);
 			
-			return ret;
+			return start;
 		}
 
 		void swap(LinkedList<V>& list)
