@@ -133,7 +133,7 @@ namespace _DataStructures_
 				return *this;
 			}
 
-			V operator *() {
+			V& operator *() {
 
 				return ptr->value;
 			}
