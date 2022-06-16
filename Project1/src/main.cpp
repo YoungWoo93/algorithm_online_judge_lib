@@ -201,16 +201,27 @@ void LLtest()
 	cout << endl;
 }
 
+#include <vector>
+#include <string>
+
 void main()
 {
-	vector<int> test;
+	std::vector<char> tv = { 'a', 'b', 'c', 'd' };
+	std::string ts(tv.begin(), tv.end());
 
-	test.push_back(1);
-	test.push_back(2);
-	test.push_back(3);
+	Vector<char> tv2;
+	tv2.push_back('a');
+	tv2.push_back('b');
+	tv2.push_back('c');
+	tv2.push_back('d');
+	tv2.push_back('2');
+	std::string ts2(tv2.begin(), tv2.end());
+
+	cout << ts << endl;
+	cout << ts2 << endl;
 
 	//LLtest();
 	//treeTest();
-	vectorTest();
+	//vectorTest();
 	//hashTest();
 }

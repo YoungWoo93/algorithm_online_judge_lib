@@ -73,7 +73,7 @@ namespace _DataStructures_
 				return ret;
 			}
 			int operator -(iterator it) {
-				
+
 				return (ptr - it.ptr);
 			}
 
@@ -136,18 +136,33 @@ namespace _DataStructures_
 		{
 			return itemCount;
 		}
+
+		void assign(size_t _size, V value)
+		{
+			V* temp = new V[_size];// (V*)malloc(sizeof(V) * size);
+
+			for (int i = 0; i < _size; i++)
+				temp[i] = value;
+
+			delete[] ptr;
+
+			ptr = temp;
+			maxSize = _size;
+			itemCount = 0;
+		}
+
 		void push_back(V value)
 		{
 			if (itemCount >= maxSize)
 				resize(maxSize * 2);
-			
+
 
 			*(ptr + itemCount) = value;
 			itemCount++;
 		}
 		void pop_back()
 		{
-			if(itemCount > 0)
+			if (itemCount > 0)
 				itemCount--;
 		}
 		void insert(iterator index, V value)
@@ -202,7 +217,7 @@ namespace _DataStructures_
 		{
 			for (iterator it = index; it != end() - 1; it++)
 				*it = *(it + 1);
-			
+
 			itemCount--;
 
 			return index;
@@ -287,6 +302,6 @@ namespace _DataStructures_
 		iterator _iterator;
 
 		unsigned int itemCount;
-		
+
 	};
 }

@@ -37,12 +37,6 @@ namespace _DataStructures_
 		LinkedListNode<V>* next;
 	};
 
-	template <typename T>
-	std::ostream& operator <<(std::ostream& o, LinkedListNode<T> p)
-	{
-		return o << p.value;
-	}
-
 	template <typename V>
 	class LinkedList
 	{
@@ -334,7 +328,7 @@ namespace _DataStructures_
 			LinkedListNode<V>* newNode = new LinkedListNode<V>(value);
 
 			if (cur == nullptr)		// 근데 여기가 end로서의 null 인지, 개발자 실수로 인한 null인지 알 방법이 있나?
-			{						
+			{
 				push_back(value);
 			}
 			else
@@ -386,7 +380,7 @@ namespace _DataStructures_
 		iterator erase(iterator index)
 		{
 			LinkedListNode<V>* cur = index.ptr;
-			iterator ret = index+1;
+			iterator ret = index + 1;
 
 			if (cur->prev == nullptr)
 			{
@@ -409,9 +403,9 @@ namespace _DataStructures_
 
 		iterator erase(iterator start, iterator end)
 		{
-			while(start != end)
+			while (start != end)
 				start = erase(start);
-			
+
 			return start;
 		}
 
@@ -508,7 +502,6 @@ namespace _DataStructures_
 	public:
 		LinkedListNode<V>* head;
 		LinkedListNode<V>* tail;
-
 	protected:
 		unsigned int nodeCount;
 
@@ -517,5 +510,5 @@ namespace _DataStructures_
 		iterator _iterator;
 	};
 
-	
+
 }
