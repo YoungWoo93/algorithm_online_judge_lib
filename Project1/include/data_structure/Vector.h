@@ -2,60 +2,60 @@
 
 #include <stdlib.h>
 #include <string.h>
-
+#include <iterator>
 namespace _DataStructures_
 {
 	template <typename V>
 	class Vector {
 	public:
-		class iterator {
+		class myIterator : public std::iterator<std::random_access_iterator_tag, V>{
 
 
 		public:
-			iterator() :ptr(nullptr) {}
-			iterator(const iterator& it) :ptr(it.ptr) {}
-			~iterator() {}
+			myIterator() :ptr(nullptr) {}
+			myIterator(const myIterator& it) :ptr(it.ptr) {}
+			~myIterator() {}
 
 
-			bool operator ==(const iterator& it) {
+			bool operator ==(const myIterator& it) {
 
 				return ptr == it.ptr;
 			}
 
-			bool operator !=(const iterator& it) {
+			bool operator !=(const myIterator& it) {
 
 				return ptr != it.ptr;
 			}
 
-			iterator& operator =(const iterator& it) {
+			myIterator& operator =(const myIterator& it) {
 
 				ptr = it.ptr;
 
 				return *this;
 			}
 
-			iterator operator +(const int n) {
-				iterator ret(*this);
+			myIterator operator +(const int n) {
+				myIterator ret(*this);
 
 				for (int i = 0; i < n; i++)
 					ret++;
 
 				return ret;
 			}
-			iterator& operator ++() {
+			myIterator& operator ++() {
 
 				ptr++;
 
 				return *this;
 			}
-			iterator& operator ++(int) {
-				iterator ret(*this);
+			myIterator& operator ++(int) {
+				myIterator ret(*this);
 
 				ptr++;
 
 				return ret;
 			}
-			iterator& operator +=(const int n) {
+			myIterator& operator +=(const int n) {
 
 				for (int i = 0; i < n; i++)
 					ptr++;
@@ -64,33 +64,33 @@ namespace _DataStructures_
 			}
 
 
-			iterator operator -(const int n) {
-				iterator ret(*this);
+			myIterator operator -(const int n) {
+				myIterator ret(*this);
 
 				for (int i = 0; i < n; i++)
 					ret--;
 
 				return ret;
 			}
-			int operator -(iterator it) {
+			int operator -(myIterator it) {
 
 				return (ptr - it.ptr);
 			}
 
-			iterator& operator --() {
+			myIterator& operator --() {
 
 				ptr--;
 
 				return *this;
 			}
-			iterator& operator --(int) {
-				iterator ret(*this);
+			myIterator& operator --(int) {
+				myIterator ret(*this);
 
 				ptr--;
 
 				return ret;
 			}
-			iterator& operator -=(const int n) {
+			myIterator& operator -=(const int n) {
 
 				for (int i = 0; i < n; i++)
 					ptr--;
@@ -114,11 +114,13 @@ namespace _DataStructures_
 			itemCount = 0;
 			maxSize = 1024;
 		}
-		Vector(unsigned int count, const V& value)
+		Vector(unsigned int count, const V& value = V())
 		{
-			ptr = new V[count * 2];//(V*)malloc(sizeof(V) * count * 2);
-			for (unsigned int i = 0; i < count; i++)
-				memcpy_s(ptr + i, sizeof(V), &value, sizeof(V));
+			ptr = new V[count * 2]; //(V*)malloc(sizeof(V) * count * 2);
+			
+			for (size_t i = 0; i < count; i++)
+				ptr[i] = value;
+		
 
 			itemCount = count;
 			maxSize = count * 2;
@@ -137,18 +139,14 @@ namespace _DataStructures_
 			return itemCount;
 		}
 
-		void assign(size_t _size, V value)
+		void assign(size_t _size, V& value)
 		{
-			V* temp = new V[_size];// (V*)malloc(sizeof(V) * size);
-
-			for (int i = 0; i < _size; i++)
-				temp[i] = value;
-
 			delete[] ptr;
+			Vector temp(_size, value);
 
-			ptr = temp;
-			maxSize = _size;
-			itemCount = 0;
+			ptr = temp.ptr;
+			maxSize = temp.maxSize;
+			itemCount = temp.itemCount;
 		}
 
 		void push_back(V value)
@@ -165,24 +163,24 @@ namespace _DataStructures_
 			if (itemCount > 0)
 				itemCount--;
 		}
-		void insert(iterator index, V value)
+		void insert(myIterator index, V value)
 		{
 			if (itemCount + 1 > maxSize)
 				resize(maxSize * 2);
 
-			for (iterator it = end(); it != index; it--)
+			for (myIterator it = end(); it != index; it--)
 				*it = *(it - 1);
 
 			*index = value;
 			itemCount++;
 		}
 
-		void insert(iterator index, unsigned int count, V value)
+		void insert(myIterator index, unsigned int count, V value)
 		{
 			while (itemCount + count > maxSize)
 				resize(maxSize * 2);
 
-			for (iterator it = rbegin() - count; it != index; it--)
+			for (myIterator it = rbegin() - count; it != index; it--)
 				*it = *(it - count);
 
 			for (int i = 0; i < count; i++)
@@ -194,17 +192,17 @@ namespace _DataStructures_
 			itemCount += count;
 		}
 
-		void insert(iterator index, iterator start, iterator end)
+		void insert(myIterator index, myIterator start, myIterator end)
 		{
 			int count = end - start;
 
 			while (itemCount + count > maxSize)
 				resize(maxSize * 2);
 
-			for (iterator it = rbegin() - count; it != index; it--)
+			for (myIterator it = rbegin() - count; it != index; it--)
 				*it = *(it - count);
 
-			for (iterator it = start; it != end; it++)
+			for (myIterator it = start; it != end; it++)
 			{
 				*index = *it;
 				index++;
@@ -213,9 +211,9 @@ namespace _DataStructures_
 			itemCount += count;
 		}
 
-		iterator erase(iterator index)
+		myIterator erase(myIterator index)
 		{
-			for (iterator it = index; it != end() - 1; it++)
+			for (myIterator it = index; it != end() - 1; it++)
 				*it = *(it + 1);
 
 			itemCount--;
@@ -223,11 +221,11 @@ namespace _DataStructures_
 			return index;
 		}
 
-		iterator erase(iterator _start, iterator _end)
+		myIterator erase(myIterator _start, myIterator _end)
 		{
 			int count = _end - _start;
 
-			for (iterator it = _start; it != end() - count; it++)
+			for (myIterator it = _start; it != end() - count; it++)
 				*it = *(it + count);
 
 			itemCount -= count;
@@ -244,30 +242,30 @@ namespace _DataStructures_
 			return ptr[itemCount - 1];
 		}
 
-		iterator begin()
+		myIterator begin()
 		{
-			_iterator.ptr = ptr;
+			_myIterator.ptr = ptr;
 
-			return _iterator;
+			return _myIterator;
 		}
-		iterator end()
+		myIterator end()
 		{
-			_iterator.ptr = ptr + itemCount;
+			_myIterator.ptr = ptr + itemCount;
 
-			return _iterator;
+			return _myIterator;
 		}
 
-		iterator rbegin()
+		myIterator rbegin()
 		{
-			_iterator.ptr = ptr + (itemCount - 1);
+			_myIterator.ptr = ptr + (itemCount - 1);
 
-			return _iterator;
+			return _myIterator;
 		}
-		iterator rend()
+		myIterator rend()
 		{
-			_iterator.ptr = ptr - 1;
+			_myIterator.ptr = ptr - 1;
 
-			return _iterator;
+			return _myIterator;
 		}
 
 		V& at(unsigned int index)
@@ -277,6 +275,22 @@ namespace _DataStructures_
 		V& operator[](unsigned int index)
 		{
 			return *(ptr + index);
+		}
+
+		Vector<V>& operator=(const Vector<V>& v)
+		{
+			V* temp = new V[v.maxSize];
+			itemCount = v.itemCount;
+			maxSize = v.maxSize;
+
+			for (int i = 0; i < v.itemCount; i++)
+				temp[i] = *(v.ptr + i);
+
+			delete ptr;
+
+			ptr = temp;
+
+			return *this;
 		}
 
 	private:
@@ -299,7 +313,7 @@ namespace _DataStructures_
 
 	private:
 		V* ptr;
-		iterator _iterator;
+		myIterator _myIterator;
 
 		unsigned int itemCount;
 

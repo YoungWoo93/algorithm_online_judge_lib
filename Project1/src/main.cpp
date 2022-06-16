@@ -204,22 +204,31 @@ void LLtest()
 #include <vector>
 #include <string>
 
+void printV(Vector<Vector<int>>& test)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++)
+			cout << test[i][j] << " ";
+		cout << endl;
+	}
+}
+
 void main()
 {
-	std::vector<char> tv = { 'a', 'b', 'c', 'd' };
-	std::string ts(tv.begin(), tv.end());
+	std::vector<std::vector<int>> testv(10, std::vector<int>(10, 1));
+	Vector<Vector<int>> test(5, Vector<int>(5, 0));
 
-	Vector<char> tv2;
-	tv2.push_back('a');
-	tv2.push_back('b');
-	tv2.push_back('c');
-	tv2.push_back('d');
-	tv2.push_back('2');
-	std::string ts2(tv2.begin(), tv2.end());
+	printV(test);
 
-	cout << ts << endl;
-	cout << ts2 << endl;
+	int count = 0;
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++)
+			test[i][j] = count++;
+	}
 
+	printV(test);
 	//LLtest();
 	//treeTest();
 	//vectorTest();
