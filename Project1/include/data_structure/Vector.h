@@ -8,7 +8,7 @@ namespace _DataStructures_
 	template <typename V>
 	class Vector {
 	public:
-		class myIterator : public std::iterator<std::random_access_iterator_tag, V>{
+		class myIterator : public std::iterator<std::random_access_iterator_tag, V> {
 
 
 		public:
@@ -114,13 +114,30 @@ namespace _DataStructures_
 			itemCount = 0;
 			maxSize = 1024;
 		}
+		Vector(const Vector& v)
+		{
+			ptr = new V[v.maxSize];
+
+			for (int i = 0; i < v.itemCount; i++)
+			{
+				auto test = V(*(v.ptr + i));
+				*(ptr + i) = test;
+			}
+
+			itemCount = v.itemCount;
+			maxSize = v.maxSize;
+		}
 		Vector(unsigned int count, const V& value = V())
 		{
 			ptr = new V[count * 2]; //(V*)malloc(sizeof(V) * count * 2);
-			
-			for (size_t i = 0; i < count; i++)
-				ptr[i] = value;
-		
+
+			for (int i = 0; i < count; i++)
+			{
+				auto test = value;
+				auto testv = V(test);
+				*(ptr + i) = testv;
+			}
+
 
 			itemCount = count;
 			maxSize = count * 2;
@@ -139,14 +156,19 @@ namespace _DataStructures_
 			return itemCount;
 		}
 
-		void assign(size_t _size, V& value)
+		void assign(size_t _size, const V& value = V())
 		{
-			delete[] ptr;
-			Vector temp(_size, value);
+			if (ptr != nullptr)
+				delete[] ptr;
 
-			ptr = temp.ptr;
-			maxSize = temp.maxSize;
-			itemCount = temp.itemCount;
+			ptr = new V[_size * 2]; //(V*)malloc(sizeof(V) * count * 2);
+
+			for (size_t i = 0; i < _size; i++)
+				ptr[i] = value;
+
+
+			itemCount = _size;
+			maxSize = _size * 2;
 		}
 
 		void push_back(V value)
@@ -279,16 +301,15 @@ namespace _DataStructures_
 
 		Vector<V>& operator=(const Vector<V>& v)
 		{
-			V* temp = new V[v.maxSize];
+			if (ptr != nullptr)
+				delete[] ptr;
+
+			ptr = new V[v.maxSize];
 			itemCount = v.itemCount;
 			maxSize = v.maxSize;
 
 			for (int i = 0; i < v.itemCount; i++)
-				temp[i] = *(v.ptr + i);
-
-			delete ptr;
-
-			ptr = temp;
+				ptr[i] = *(v.ptr + i);
 
 			return *this;
 		}
@@ -297,14 +318,12 @@ namespace _DataStructures_
 		void resize(unsigned int size)
 		{
 			V* temp = new V[size];// (V*)malloc(sizeof(V) * size);
+			for (size_t i = 0; i < itemCount; i++)
+				temp[i] = ptr[i];
 
-			memcpy_s(temp, sizeof(V) * size, ptr, sizeof(V) * itemCount);
 			delete[] ptr;
-
 			ptr = temp;
 			maxSize = size;
-			if (itemCount > size)
-				itemCount = size;
 		}
 	public:
 

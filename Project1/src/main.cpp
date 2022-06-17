@@ -206,9 +206,9 @@ void LLtest()
 
 void printV(Vector<Vector<int>>& test)
 {
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < test.size(); i++)
 	{
-		for (int j = 0; j < 5; j++)
+		for (int j = 0; j < test[i].size(); j++)
 			cout << test[i][j] << " ";
 		cout << endl;
 	}
@@ -216,19 +216,18 @@ void printV(Vector<Vector<int>>& test)
 
 void main()
 {
-	std::vector<std::vector<int>> testv(10, std::vector<int>(10, 1));
-	Vector<Vector<int>> test(5, Vector<int>(5, 0));
+	Vector<Vector<int>> test2(5, Vector<int>(5, 5));
+	Vector<Vector<int>> test;
+	test2.~Vector();
 
+	test.assign(1, Vector<int>(10, 0));
+	test.push_back(Vector<int>(1, 1));
+	test.push_back(Vector<int>(2, 2));
+	test.push_back(Vector<int>(3, 3));
+	test.push_back(Vector<int>(4, 4));
+	
 	printV(test);
 
-	int count = 0;
-	for (int i = 0; i < 5; i++)
-	{
-		for (int j = 0; j < 5; j++)
-			test[i][j] = count++;
-	}
-
-	printV(test);
 	//LLtest();
 	//treeTest();
 	//vectorTest();
