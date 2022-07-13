@@ -6,7 +6,7 @@
 namespace _DataStructures_
 {
 	template <typename V>
-	class Vector {
+	class vector {
 	public:
 		class myIterator : public std::iterator<std::random_access_iterator_tag, V> {
 
@@ -48,7 +48,7 @@ namespace _DataStructures_
 
 				return *this;
 			}
-			myIterator& operator ++(int) {
+			const myIterator operator ++(int) {
 				myIterator ret(*this);
 
 				ptr++;
@@ -78,12 +78,11 @@ namespace _DataStructures_
 			}
 
 			myIterator& operator --() {
-
 				ptr--;
 
 				return *this;
 			}
-			myIterator& operator --(int) {
+			const myIterator operator --(int) {
 				myIterator ret(*this);
 
 				ptr--;
@@ -108,13 +107,13 @@ namespace _DataStructures_
 		};
 
 	public:
-		Vector()
+		vector()
 		{
-			ptr = new V[1024];//(V*)malloc(sizeof(V) * 1024);
+			ptr = new V[1];
 			itemCount = 0;
-			maxSize = 1024;
+			maxSize = 1;
 		}
-		Vector(const Vector& v)
+		vector(const vector& v)
 		{
 			ptr = new V[v.maxSize];
 
@@ -127,9 +126,9 @@ namespace _DataStructures_
 			itemCount = v.itemCount;
 			maxSize = v.maxSize;
 		}
-		Vector(unsigned int count, const V& value = V())
+		vector(unsigned int count, const V& value = V())
 		{
-			ptr = new V[count * 2]; //(V*)malloc(sizeof(V) * count * 2);
+			ptr = new V[count * 2];
 
 			for (int i = 0; i < count; i++)
 			{
@@ -138,11 +137,10 @@ namespace _DataStructures_
 				*(ptr + i) = testv;
 			}
 
-
 			itemCount = count;
 			maxSize = count * 2;
 		}
-		~Vector()
+		~vector()
 		{
 			delete[] ptr;
 		}
@@ -254,7 +252,14 @@ namespace _DataStructures_
 
 			return _start;
 		}
+	
+		void clear()
+		{
+			delete[] ptr;
+			itemCount = 0;
+			_myIterator.ptr = nullptr;
 
+		}
 		V& front()
 		{
 			return ptr[0];
@@ -299,7 +304,7 @@ namespace _DataStructures_
 			return *(ptr + index);
 		}
 
-		Vector<V>& operator=(const Vector<V>& v)
+		vector<V>& operator=(const vector<V>& v)
 		{
 			if (ptr != nullptr)
 				delete[] ptr;
