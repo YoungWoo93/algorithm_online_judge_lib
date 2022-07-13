@@ -10,12 +10,12 @@
 namespace _DataStructures_
 {
 	template <typename K, typename V>
-	class HashTableNode {
+	class HashMapNode {
 	public:
-		HashTableNode()
+		HashMapNode()
 		{
 		}
-		~HashTableNode()
+		~HashMapNode()
 		{
 
 		}
@@ -25,14 +25,14 @@ namespace _DataStructures_
 	};
 
 	template <typename K, typename V>
-	class HashTable {
+	class HashMap {
 	public:
-		HashTable(int _size = 1024)
+		HashMap(int _size = 1024)
 		{
 			maxSize = _size;
-			table = new LinkedList<HashTableNode<K, V>>[maxSize];
+			table = new LinkedList<HashMapNode<K, V>>[maxSize];
 		}
-		~HashTable()
+		~HashMap()
 		{
 			delete[] table;
 		}
@@ -93,7 +93,7 @@ namespace _DataStructures_
 				ptr = ptr->next;
 			}
 			
-			HashTableNode<K, V> temp;
+			HashMapNode<K, V> temp;
 			temp.key = key;
 
 			table[index].push_back(temp);
@@ -115,7 +115,7 @@ namespace _DataStructures_
 				ptr = ptr->next;
 			}
 
-			HashTableNode<K, V> temp;
+			HashMapNode<K, V> temp;
 			temp.key = key;
 
 			table[index].push_back(temp);
@@ -149,7 +149,7 @@ namespace _DataStructures_
 		int maxSize;
 		int itemCount;
 	private:
-		LinkedList<HashTableNode<K, V>>* table;
+		LinkedList<HashMapNode<K, V>>* table;
 		MD5 md5;
 	};
 

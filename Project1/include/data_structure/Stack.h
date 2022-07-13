@@ -5,14 +5,14 @@
 namespace _DataStructures_
 {
 	template <typename V>
-	class Stack {
+	class stack {
 		// https://www.cplusplus.com/reference/stack/stack/
 	public:
-		Stack()
+		stack()
 		{
 
 		}
-		~Stack()
+		~stack()
 		{
 
 		}
@@ -39,7 +39,7 @@ namespace _DataStructures_
 		{
 			container.pop_back();
 		}
-		void swap(Stack<V> &stack)
+		void swap(stack<V> &stack)
 		{
 			this->container.swap(stack.container);
 		}

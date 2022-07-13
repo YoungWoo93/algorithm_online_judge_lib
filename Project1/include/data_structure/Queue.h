@@ -5,14 +5,14 @@
 namespace _DataStructures_
 {
 	template <typename V>
-	class Queue {
+	class queue {
 		// https://www.cplusplus.com/reference/queue/queue/
 	public:
-		Queue()
+		queue()
 		{
 
 		}
-		~Queue()
+		~queue()
 		{
 
 		}
@@ -43,7 +43,7 @@ namespace _DataStructures_
 		{
 			container.pop_back();
 		}
-		void swap(Queue<V>& queue)
+		void swap(queue<V>& queue)
 		{
 			this->container.swap(queue.container);
 		}
