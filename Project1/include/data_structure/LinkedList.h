@@ -82,9 +82,9 @@ namespace _DataStructures_
 
 				return *this;
 			}
-			iterator& operator ++(int) {
-
+			const iterator operator ++(int) {
 				iterator ret(*this);
+
 				ptr = ptr->next;
 
 				return ret;
@@ -112,9 +112,9 @@ namespace _DataStructures_
 
 				return *this;
 			}
-			iterator& operator --(int) {
-
+			const iterator operator --(int) {
 				iterator ret(*this);
+
 				ptr = ptr->prev;
 
 				return ret;
@@ -128,7 +128,6 @@ namespace _DataStructures_
 			}
 
 			V& operator *() {
-
 				return ptr->value;
 			}
 
@@ -383,17 +382,15 @@ namespace _DataStructures_
 			iterator ret = index + 1;
 
 			if (cur->prev == nullptr)
-			{
 				pop_front();
-			}
+			else if (cur->next == nullptr)
+				pop_back();
 			else
 			{
 				nodeCount--;
 
-				if (cur->prev != nullptr)
-					cur->prev->next = cur->next;
-				if (cur->next != nullptr)
-					cur->next->prev = cur->prev;
+				cur->prev->next = cur->next;
+				cur->next->prev = cur->prev;
 
 				delete cur;
 			}
