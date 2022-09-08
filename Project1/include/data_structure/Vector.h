@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <iterator>
+
 namespace _DataStructures_
 {
 	template <typename V>
@@ -168,7 +169,15 @@ namespace _DataStructures_
 			itemCount = _size;
 			maxSize = _size * 2;
 		}
+		void reserve(const size_t _size)
+		{
+			V* temp = new V[_size];
 
+			memmove(temp, ptr, sizeof(V) * itemCount);
+			maxSize = _size;
+			delete[] ptr;
+			ptr = temp;
+		}
 		void push_back(V value)
 		{
 			if (itemCount >= maxSize)
@@ -333,13 +342,13 @@ namespace _DataStructures_
 	public:
 
 		unsigned int maxSize;
+		V* ptr;
+		myIterator _myIterator;
+		unsigned int itemCount;
+
 	protected:
 
 	private:
-		V* ptr;
-		myIterator _myIterator;
-
-		unsigned int itemCount;
 
 	};
 }

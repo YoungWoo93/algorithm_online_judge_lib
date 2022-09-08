@@ -4,6 +4,7 @@
 #include "../include/data_structure/Stack.h"
 #include "../include/data_structure/Deque.h"
 #include "../include/data_structure/BinaryTree.h"
+#include "../include/data_structure/RedBlackTree.h"
 #include "../include/data_structure/Vector.h"
 #include "../include/data_structure/HashTable.h"
 
@@ -12,8 +13,8 @@ using namespace std;
 
 void treeTest()
 {
-	BinaryTree<int> upTree([](BinaryTreeNode<int>* a, BinaryTreeNode<int>* b) {return a->value > b->value; });
-	BinaryTree<int> downTree([](BinaryTreeNode<int>* a, BinaryTreeNode<int>* b) {return a->value < b->value; });
+	BinaryTree<int> upTree([](int a, int b) {return a > b; });
+	BinaryTree<int> downTree([](int a, int b) {return a < b; });
 
 	while (true)
 	{
@@ -33,10 +34,6 @@ void treeTest()
 			upTree.erase(value);
 			downTree.erase(value + 100);
 		}
-		else if (cmd == 3)
-		{
-			upTree.merge(&downTree, upTree.compare);
-		}
 
 		cout << endl;
 		cout << "  upTree" << endl;
@@ -49,8 +46,8 @@ void treeTest()
 
 void vectorTest()
 {
-	Vector<double> v1;
-	Vector<double> v2(100, 10.0);
+	_DataStructures_::vector<double> v1;
+	_DataStructures_::vector<double> v2(100, 10.0);
 	for (int i = 0; i < 100; i++)
 	{
 		v1.push_back((double)i);
@@ -96,7 +93,7 @@ void vectorTest()
 
 void hashTest()
 {
-	HashTable<string, int> htb;
+	HashMap<string, int> htb;
 
 	cout << sizeof("123") << endl;
 
@@ -108,7 +105,7 @@ void hashTest()
 	cout << htb["name1"] << endl;
 	cout << htb["name2"] << endl;
 
-	//HashTable<string, int> htb2(2);
+	//HashMap<string, int> htb2(2);
 
 	//htb2.insert("name0", 10);
 	//htb2.insert("name1", 11);
@@ -119,7 +116,7 @@ void hashTest()
 	//cout << htb2["name2"] << endl;
 
 
-	//HashTable<int, int> htb;
+	//HashMap<int, int> htb;
 	//htb.insert(0, 10);
 	//htb.insert(1, 11);
 	//htb.insert(2, 12);
@@ -129,7 +126,7 @@ void hashTest()
 	//cout << htb[2] << endl;
 	//cout << htb[5] << endl;
 
-	//HashTable<int, int> htb2(2);
+	//HashMap<int, int> htb2(2);
 	//htb2.insert(0, 10);
 	//htb2.insert(1, 11);
 	//htb2.insert(2, 12);
@@ -204,7 +201,7 @@ void LLtest()
 #include <vector>
 #include <string>
 
-void printV(Vector<Vector<int>>& test)
+void printV(_DataStructures_::vector<_DataStructures_::vector<int>>& test)
 {
 	for (int i = 0; i < test.size(); i++)
 	{
@@ -214,22 +211,214 @@ void printV(Vector<Vector<int>>& test)
 	}
 }
 
+class testClass {
+public:
+	testClass()
+	{
+	}
+	testClass(int i)
+	{
+		data = i;
+
+		//cout << "new Class ! " << data << endl;
+	}
+	~testClass()
+	{
+		cout << "delete Class ! " << data << endl;
+	}
+
+	int data;
+	char dummy[1024];
+};
+
+
+#include <queue>
+#include "../include/data_structure/Heap.h"
+void heapTest()
+{
+	_DataStructures_::Heap<int> mypq([](const int& a, const int& b) {return a < b; });
+
+	int input = 0;
+	while (true)
+	{
+
+		cin >> input;
+		if (input == -1)
+			break;
+
+		mypq.push(input);
+		
+		cout << "==================" << endl;
+		for (int i = 1; i < mypq.container.size(); i++)
+			cout << "\t" << mypq.container[i];
+		cout << endl << "==================" << endl;
+	}
+
+	while (!mypq.empty())
+	{
+		mypq.pop();
+		cout << "==================" << endl;
+		for (int i = 1; i < mypq.container.size(); i++)
+			cout << "\t" << mypq.container[i];
+		cout << endl << "==================" << endl;
+	}
+}
+
+
+void autoHeapTest()
+{
+	std::priority_queue<int, std::vector<int>, greater<int>> stdpq;
+	_DataStructures_::Heap<int> myqp([](const int& a, const int& b) {return a < b; });
+
+	int targetSize = 10;
+
+	for (int i = 0; i < 1000; i++)
+	{
+		for (int j = 0; j < 1000; j++)
+		{
+			
+			if (stdpq.empty() || rand() % stdpq.size() < targetSize)
+			{
+				int v = rand() % 100;
+				stdpq.push(v);
+				myqp.push(v);
+			}
+
+			if (stdpq.top() != myqp.top())
+			{
+				cout << "???" << endl;
+			}
+			
+			if (!stdpq.empty() && rand() % stdpq.size() > targetSize)
+			{
+				stdpq.pop();
+				myqp.pop();
+			}
+
+			if (stdpq.top() != myqp.top())
+			{
+				cout << "???" << endl;
+			}
+		}
+	}
+
+
+	targetSize = 100;
+
+	for (int i = 0; i < 1000; i++)
+	{
+		for (int j = 0; j < 1000; j++)
+		{
+
+			if (stdpq.empty() || rand() % stdpq.size() < targetSize)
+			{
+				int v = rand() % 100;
+				stdpq.push(v);
+				myqp.push(v);
+			}
+
+			if (stdpq.top() != myqp.top())
+			{
+				cout << "???" << endl;
+			}
+
+			if (!stdpq.empty() && rand() % stdpq.size() > targetSize)
+			{
+				stdpq.pop();
+				myqp.pop();
+			}
+
+			if (stdpq.top() != myqp.top())
+			{
+				cout << "???" << endl;
+			}
+		}
+	}
+}
+
+
+
+void RBtreeTest()
+{
+	RedBlackTree<int> rbt;
+
+
+	while (true)
+	{
+		cout << "cmd 1: insert \t 2: erase" << endl;
+		cout << "cmd value >> ";
+		int cmd;
+		int value;
+		cin >> cmd >> value;
+
+		if (cmd == 1)
+		{
+			rbt.insert(value);
+		}
+		else if (cmd == 2)
+		{
+			rbt.erase(value);
+		}
+
+		cout << endl;
+		cout << " Tree" << endl;
+		rbt.printTree();
+		if (!rbt.proveTree()) {
+			cout << " ???";
+		}
+	}
+}
+
+void RBtreeTestAuto()
+{
+	RedBlackTree<int> rbt;
+	std::vector<int> pool;
+	int temp;
+
+	int treeWeight = 10;
+
+	int push = 0;
+	int pop = 0;
+	int sizeSum = 0;
+
+	int cycle = 1000;
+	for(int count = 0; count < cycle; count++)
+	{
+		cout << rbt.blackDepth << endl;
+
+		sizeSum += pool.size();
+		if ((rand() % (pool.size() / 2 + 1)) < (treeWeight / 4) + 1)
+		{
+			push++;
+			temp = rand() % 1000;
+			cout << "\tinsert " << temp << endl;
+			rbt.insert(temp);
+			pool.push_back(temp);
+		}
+		else if(!pool.empty())
+		{
+			pop++;
+			temp = rand() % pool.size();
+			cout << "\terase " << pool[temp] << endl;
+			rbt.erase(pool[temp]);
+			pool.erase(pool.begin() + temp);
+		}
+
+		cout << endl;
+		cout << " Tree" << endl;
+		rbt.printTree();
+		if (!rbt.proveTree()) {
+			cout << " ??? " << count;
+		}
+	}
+
+	cout << "push : " << push << "\t pop : " << pop << endl;
+	cout << "size aver : " << sizeSum / cycle << endl;
+}
+
+
 void main()
 {
-	Vector<Vector<int>> test2(5, Vector<int>(5, 5));
-	Vector<Vector<int>> test;
-	test2.~Vector();
-
-	test.assign(1, Vector<int>(10, 0));
-	test.push_back(Vector<int>(1, 1));
-	test.push_back(Vector<int>(2, 2));
-	test.push_back(Vector<int>(3, 3));
-	test.push_back(Vector<int>(4, 4));
-	
-	printV(test);
-
-	//LLtest();
-	//treeTest();
-	//vectorTest();
-	//hashTest();
+	//RBtreeTest();
+	RBtreeTestAuto();
 }
